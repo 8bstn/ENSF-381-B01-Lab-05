@@ -13,8 +13,19 @@
  <button id="purpleButton">Purple</button>
 </body>
 <script type="text/javascript">
- <!-- Your JavaScript code will go here -->
-   // Get elements
+    // retrieveData function to fetch all user data from API
+    async function retrieveData() {
+        try{
+            const response = await fetch('https://67c2083461d8935867e53596.mockapi.io/:endpoint');
+            const data = await response.json;
+
+            // Process the fetched data
+            console.log('Fetched Data', data);
+        } catch (error) {
+            console.error('No users were found with the provided User_ID', error);
+        }
+    }
+    // Get elements
     const textInput = document.getElementById("textInput");
     const textLabel = document.getElementById("textLabel");
     const redButton = document.getElementById("redButton");
@@ -28,6 +39,7 @@
       if (event.key === "Enter") {
         textLabel.textContent = textInput.value;
         textInput.value = "";
+        retrieveData();
       }
     });
 
@@ -50,6 +62,5 @@
     purpleButton.addEventListener("click", function() {
       textLabel.style.color = "purple";
     });
- 
 </script>
 </html>
