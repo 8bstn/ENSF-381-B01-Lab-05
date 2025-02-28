@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lab5 - Exercise 3</title>
+</head>
+<body>
+  <input 
+    type="text" 
+    id="textInput" 
+    placeholder="Enter a user number (1–30)..."
+  />
+
+  <label id="textLabel"></label>
+
+  <button id="redButton">Red</button>
+  <button id="blueButton">Blue</button>
+  <button id="greenButton">Green</button>
+  <button id="orangeButton">Orange</button>
+  <button id="purpleButton">Purple</button>
+
+  <script type="text/javascript">
+    const textInput = document.getElementById("textInput");
+    const textLabel = document.getElementById("textLabel");
+    const redButton = document.getElementById("redButton");
+    const blueButton = document.getElementById("blueButton");
+    const greenButton = document.getElementById("greenButton");
+    const orangeButton = document.getElementById("orangeButton");
+    const purpleButton = document.getElementById("purpleButton");
+
+    async function retrieveData() {
+      try {
+        const response = await fetch("https://67c200de61d8935867e5138d.mockapi.io/users_api");
+        if (!response.ok) {
+          throw new Error("Network response was not ok: " + response.status);
+        }
+        return await response.json();
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        return []; 
+      }
+    }
+
+    textInput.addEventListener("keypress", async function(event) {
+      if (event.key === "Enter") {
+        const enteredID = textInput.value.trim();
+        textInput.value = "";
+
+        if (!enteredID) {
+          textLabel.textContent = "Please enter a valid user ID.";
+          return;
+        }
+
+        const users = await retrieveData();
+        const foundUser = users.find(u => u.id === enteredID);
+
+        if (foundUser) {
+          textLabel.textContent = `ID: ${foundUser.id}, Name: ${foundUser.first_name}, Group: ${foundUser.user_group}`;
+        } else {
+          textLabel.textContent = "No users were found with the provided User_ID.";
+        }
+      }
+    });
+    
+    redButton.addEventListener("click",   () => textLabel.style.color = "red");
+    blueButton.addEventListener("click",  () => textLabel.style.color = "blue");
+    greenButton.addEventListener("click", () => textLabel.style.color = "green");
+    orangeButton.addEventListener("click",() => textLabel.style.color = "orange");
+    purpleButton.addEventListener("click",() => textLabel.style.color = "purple");
+  </script>
+</body>
+</html>
+
