@@ -14,7 +14,7 @@
 </body>
 <script type="text/javascript">
  <!-- Your JavaScript code will go here -->
-   
+   // Get elements
     const textInput = document.getElementById("textInput");
     const textLabel = document.getElementById("textLabel");
     const redButton = document.getElementById("redButton");
@@ -22,7 +22,8 @@
     const greenButton = document.getElementById("greenButton");
     const orangeButton = document.getElementById("orangeButton");
     const purpleButton = document.getElementById("purpleButton");
-
+    
+    // Detect when the Enter key is pressed in the textbox
     textInput.addEventListener("keypress", function(event) {
       if (event.key === "Enter") {
         textLabel.textContent = textInput.value;
