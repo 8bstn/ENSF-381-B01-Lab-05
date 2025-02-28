@@ -13,16 +13,19 @@
  <button id="purpleButton">Purple</button>
 </body>
 <script type="text/javascript">
+    // declare global data variable
+    var data;
+
     // retrieveData function to fetch all user data from API
     async function retrieveData() {
         try{
-            const response = await fetch('https://67c2083461d8935867e53596.mockapi.io/:endpoint');
-            const data = await response.json;
+            const response = await fetch('https://67c2083461d8935867e53596.mockapi.io/users_api');
+            data = await response.json();
 
             // Process the fetched data
             console.log('Fetched Data', data);
         } catch (error) {
-            console.error('No users were found with the provided User_ID', error);
+            console.error('Error fetching data', error);
         }
     }
     // Get elements
@@ -35,11 +38,25 @@
     const purpleButton = document.getElementById("purpleButton");
     
     // Detect when the Enter key is pressed in the textbox
-    textInput.addEventListener("keypress", function(event) {
+    textInput.addEventListener("keypress", async function(event) {
       if (event.key === "Enter") {
-        textLabel.textContent = textInput.value;
-        textInput.value = "";
-        retrieveData();
+        let textID = parseInt(textInput.value);
+        await retrieveData();
+
+        // Check if match is found. if so, display it
+        let user = null;
+        for (let i = 0; i < data.length; i++) {
+            if (parseInt(data[i].id) === textID) {
+              user = data[i];
+              break; // exit once a match is found
+            }
+        }
+        
+        if (user) {
+            textLabel.textContent = `ID: ${user.id}, Name: ${user.first_name}, Group: ${user.user_group}`;
+          } else {
+            textLabel.textContent = "No users were found with the provided User_ID.";
+          }
       }
     });
 
